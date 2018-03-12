@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour {
+    List<Rigidbody> rigidbodies = new List<Rigidbody>();
     CharacterController controller = null;
     Animator animator = null;
 
@@ -17,8 +18,24 @@ public class Player : MonoBehaviour {
 
     public bool grounded;
 
+    public bool Ragdoll
+    {
+        get { return !animator.enabled; }
+        set
+        {
+            animator.enabled = !value;
+            foreach (var r in rigidbodies)
+                r.isKinematic = !value;
+        }
+    }
+
+
 	// Use this for initialization
 	void Start () {
+        rigidbodies.AddRange(GetComponentsInChildren<Rigidbody>());
+        foreach (var r in rigidbodies)
+            r.isKinematic = true;
+
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 	}
