@@ -5,20 +5,19 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour {
-    List<Rigidbody> rigidbodies = new List<Rigidbody>();
+    List<Rigidbody> rigidbodies = new List<Rigidbody>();  // Ragdoll Rigidbodies
     CharacterController controller = null;
     Animator animator = null;
 
-    public float speed = 80.0f;
-    public float pushPower = 2.0f;
+    public float speed = 80.0f;                           // Movement Speed
+    public float pushPower = 2.0f;                        // Power used to push other dynamic objects
+    public float yVelocity = 0;                           // Used for jumping and applying gravity
+    public float jumpPower = 1.0f;                        // Jump power modifer
 
-    public float yVelocity = 0;
-    public float jumpPower = 1.0f;
-    public bool crouch = false;
+    public bool crouch = false;                           // Is the user crouching?
+    public bool grounded;                                 // Is the user grounded?
 
-    public bool grounded;
-
-    public bool Ragdoll
+    public bool Ragdoll                                   // Get or Set the user being a ragdoll
     {
         get { return !animator.enabled; }
         set
@@ -32,34 +31,48 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        // Add rigidbodies on object into list
         rigidbodies.AddRange(GetComponentsInChildren<Rigidbody>());
         foreach (var r in rigidbodies)
-            r.isKinematic = true;
+            r.isKinematic = true; // Set all rigidbodies to kinematic
 
+        // Get Controller and Animator components
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        // Get vertical and horizontal movement
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
 
-        controller.Move(transform.up * yVelocity * jumpPower * Time.deltaTime);
-        controller.Move(transform.forward * vertical * Time.deltaTime);
+        // Move the player
+        //controller.Move(transform.up * yVelocity * jumpPower * Time.deltaTime);
+        //controller.Move(transform.forward * vertical * Time.deltaTime);
+        controller.Move(((transform.up * yVelocity * jumpPower) + (transform.forward * vertical)) * Time.deltaTime);
 
         RaycastHit hit;
+
+        // Check if player is on the ground
         grounded = Physics.SphereCast(transform.position + controller.radius * Vector3.up, controller.radius, -Vector3.up, out hit, 0.1f);
 
         yVelocity += Physics.gravity.y * Time.deltaTime;
         if (grounded && yVelocity < 0)
             yVelocity = 0;
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (!Ragdoll && Input.GetKeyDown(KeyCode.Space) && grounded)
             yVelocity = 5.0f;
 
+        if (Input.GetKey(KeyCode.R))
+            Ragdoll = !Ragdoll;
+
         crouch = Input.GetKey(KeyCode.C);
-        controller.height = crouch ? 1.3f : 1.8f;
+        // Make player crouch if their head is under an object
+        if (Physics.Raycast(controller.transform.position + controller.height * Vector3.up, Vector3.up, 0.2f))
+            crouch = true;
+
+        controller.height = crouch ? 1.1f : 1.7f;
         controller.center = new Vector3(0, controller.height * 0.5f, 0);
 
         //controller.SimpleMove(transform.forward * vertical * speed * Time.deltaTime);
