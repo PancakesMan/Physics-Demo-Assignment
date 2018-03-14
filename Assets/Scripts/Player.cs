@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
@@ -9,7 +10,8 @@ public class Player : MonoBehaviour {
     CharacterController controller = null;
     Animator animator = null;
 
-    Vector3 InitialPosition;
+    Vector3 InitPos;
+    Quaternion InitRot;
 
     public float speed = 80.0f;                           // Movement Speed
     public float pushPower = 2.0f;                        // Power used to push other dynamic objects
@@ -41,7 +43,9 @@ public class Player : MonoBehaviour {
         // Get Controller and Animator components
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        InitialPosition = transform.position;
+
+        InitPos = transform.position;
+        InitRot = transform.rotation;
 	}
 	
 	// Update is called once per frame
@@ -99,7 +103,9 @@ public class Player : MonoBehaviour {
 
     public void Respawn()
     {
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Ragdoll = false;
-        transform.position = InitialPosition;
+        transform.position = InitPos;
+        transform.rotation = InitRot;
     }
 }

@@ -26,7 +26,7 @@ public class OpeningDoor : MonoBehaviour {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, 1.5f))
+            if (Physics.Raycast(ray, out hit, 2.0f))
                 if (hit.transform.name == "Button")
                     Opening = !Opening;
         }

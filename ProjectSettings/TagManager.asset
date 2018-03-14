@@ -8,6 +8,7 @@ TagManager:
   - Head
   - StillPlatform
   - Ragdoll
+  - Projectile
   layers:
   - Default
   - TransparentFX
