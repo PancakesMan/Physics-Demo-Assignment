@@ -9,6 +9,8 @@ public class Player : MonoBehaviour {
     CharacterController controller = null;
     Animator animator = null;
 
+    Vector3 InitialPosition;
+
     public float speed = 80.0f;                           // Movement Speed
     public float pushPower = 2.0f;                        // Power used to push other dynamic objects
     public float yVelocity = 0;                           // Used for jumping and applying gravity
@@ -39,6 +41,7 @@ public class Player : MonoBehaviour {
         // Get Controller and Animator components
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        InitialPosition = transform.position;
 	}
 	
 	// Update is called once per frame
@@ -92,5 +95,11 @@ public class Player : MonoBehaviour {
 
         Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
         body.velocity = pushDir * pushPower;
+    }
+
+    public void Respawn()
+    {
+        Ragdoll = false;
+        transform.position = InitialPosition;
     }
 }
