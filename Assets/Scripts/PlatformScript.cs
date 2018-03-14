@@ -19,11 +19,14 @@ public class PlatformScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        // Store initial position
         InitialPosition = transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        // PingPong the platform from Initial Position to
+        // Initial Position + DistanceX, Y, and Z
         transform.position = InitialPosition
             + (MovingDistanceX == 0 ? 0 : Mathf.PingPong(Time.time, MovingDistanceX)) * Vector3.right * (NegativeX ? -1 : 1)
             + (MovingDistanceY == 0 ? 0 : Mathf.PingPong(Time.time, MovingDistanceY)) * Vector3.up * (NegativeY ? -1 : 1)
@@ -32,11 +35,13 @@ public class PlatformScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        // Attach player to platform so it can move the player
         if (other.CompareTag("Player"))
             other.transform.parent = gameObject.transform;
     }
     private void OnTriggerExit(Collider other)
     {
+        // Detach player form paltform so it can move freely
         if (other.CompareTag("Player"))
             other.transform.parent = null;
     }

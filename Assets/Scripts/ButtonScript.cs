@@ -19,6 +19,8 @@ public class ButtonScript : MonoBehaviour {
             if (Physics.Raycast(ray, out hit, 3.0f))
                 if (hit.transform == transform)
                 {
+                    // If we click the button with the mouse
+                    // Make the cannon shoot
                     CannonScript cs = hit.transform.parent.GetComponent<CannonScript>();
                     cs.Shoot();
                 }

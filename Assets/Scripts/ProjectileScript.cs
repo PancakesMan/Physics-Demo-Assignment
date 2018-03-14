@@ -18,9 +18,12 @@ public class ProjectileScript : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            // If the cannonball hits the player
+            // make them ragdoll
             Player player = collision.gameObject.GetComponent<Player>();
             player.Ragdoll = true;
 
+            // Invoke the players respawn function in 3 seconds
             player.Invoke("Respawn", 3.0f);
         }
     }

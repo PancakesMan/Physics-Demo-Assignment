@@ -103,8 +103,10 @@ public class Player : MonoBehaviour {
 
     public void Respawn()
     {
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // Turn the players Ragdoll off
         Ragdoll = false;
+
+        // Reset the position and rotation to what it was initially
         transform.position = InitPos;
         transform.rotation = InitRot;
     }
