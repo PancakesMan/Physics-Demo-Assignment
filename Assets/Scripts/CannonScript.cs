@@ -24,12 +24,16 @@ public class CannonScript : MonoBehaviour {
         }
 	}
 
-    void Shoot()
+    public void Shoot()
     {
         GameObject projectile = Instantiate(Cannonball, Cannonball.transform.position, Cannonball.transform.rotation);
         Rigidbody body = projectile.GetComponent<Rigidbody>();
         projectile.GetComponent<SphereCollider>().enabled = true;
         projectile.GetComponent<MeshRenderer>().enabled = true;
+
+        CannonballLiaison liaison = GetComponent<CannonballLiaison>();
+        if (liaison != null)
+            liaison.RegisterWithCloth(projectile.GetComponent<SphereCollider>());
         
         body.isKinematic = false;
         body.AddForce(Cannonball.transform.up * Force);

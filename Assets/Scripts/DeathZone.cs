@@ -16,14 +16,14 @@ public class DeathZone : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             Player player = other.GetComponent<Player>();
             player.Ragdoll = true;
 
             player.Invoke("Respawn", 3.0f);
         }
-        else if (other.tag == "Projectile")
+        else if (other.CompareTag("Projectile"))
             Destroy(other.gameObject);
     }
 }

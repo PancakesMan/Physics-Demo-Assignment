@@ -32,12 +32,12 @@ public class PlatformScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Player")
+        if (other.CompareTag("Player"))
             other.transform.parent = gameObject.transform;
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.tag == "Player")
+        if (other.CompareTag("Player"))
             other.transform.parent = null;
     }
 }

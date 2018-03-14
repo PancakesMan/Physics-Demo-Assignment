@@ -16,7 +16,7 @@ public class ProjectileScript : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
             Player player = collision.gameObject.GetComponent<Player>();
             player.Ragdoll = true;
